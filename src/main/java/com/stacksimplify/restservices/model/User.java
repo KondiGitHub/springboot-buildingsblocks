@@ -1,5 +1,6 @@
 package com.stacksimplify.restservices.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.*;
 
 @Entity
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,18 +34,18 @@ public class User {
     @Column(name = "SSN", length = 50, nullable = false, unique = true)
     private String ssn;
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", userName='" + userName + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", role='" + role + '\'' +
-                ", ssn='" + ssn + '\'' +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "User{" +
+//                "id=" + id +
+//                ", userName='" + userName + '\'' +
+//                ", firstName='" + firstName + '\'' +
+//                ", lastName='" + lastName + '\'' +
+//                ", email='" + email + '\'' +
+//                ", role='" + role + '\'' +
+//                ", ssn='" + ssn + '\'' +
+//                '}';
+//    }
 
     public User() {
 
