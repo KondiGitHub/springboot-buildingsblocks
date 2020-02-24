@@ -1,6 +1,7 @@
 package com.stacksimplify.restservices.service;
 
 import com.stacksimplify.restservices.exceptions.UserExistException;
+import com.stacksimplify.restservices.exceptions.UserNameNotFoundException;
 import com.stacksimplify.restservices.exceptions.UserNotFoundException;
 import com.stacksimplify.restservices.model.User;
 import com.stacksimplify.restservices.repositories.UserRepository;
@@ -50,7 +51,11 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public User findByName(String name){
-        return userRepository.findByUserName(name);
+    public User findByName(String name) throws UserNameNotFoundException {
+        User user =  userRepository.findByUserName(name);
+        if(user == null) {
+            throw new UserNameNotFoundException("User name not exist");
+        }
+        return user;
     }
 }
