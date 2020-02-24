@@ -3,6 +3,7 @@ package com.stacksimplify.restservices.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -13,7 +14,7 @@ import java.util.List;
 @Entity
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @Data
-public class User {
+public class User extends RepresentationModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
