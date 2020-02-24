@@ -9,6 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@Data
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
