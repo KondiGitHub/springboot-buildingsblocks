@@ -3,6 +3,7 @@ package com.stacksimplify.restservices.service;
 import com.stacksimplify.restservices.exceptions.UserExistException;
 import com.stacksimplify.restservices.exceptions.UserNameNotFoundException;
 import com.stacksimplify.restservices.exceptions.UserNotFoundException;
+import com.stacksimplify.restservices.model.Order;
 import com.stacksimplify.restservices.model.User;
 import com.stacksimplify.restservices.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +58,10 @@ public class UserService {
             throw new UserNameNotFoundException("User name not exist");
         }
         return user;
+    }
+
+    public List<Order> getAllOrders(Long id) throws UserNotFoundException {
+        Optional<User> user = findById(id);
+        return user.get().getOrders();
     }
 }

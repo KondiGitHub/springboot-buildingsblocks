@@ -3,6 +3,7 @@ package com.stacksimplify.restservices.controllers;
 import com.stacksimplify.restservices.exceptions.UserExistException;
 import com.stacksimplify.restservices.exceptions.UserNameNotFoundException;
 import com.stacksimplify.restservices.exceptions.UserNotFoundException;
+import com.stacksimplify.restservices.model.Order;
 import com.stacksimplify.restservices.model.User;
 import com.stacksimplify.restservices.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping(value = "/users")
 @Validated
 public class UserController {
 
@@ -33,13 +34,13 @@ public class UserController {
        return "hello";
     }
 
-    @RequestMapping(value = "users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+   @GetMapping()
     public List<User> getAllUsers(){
         List<User> users = userService.getAllUsers();
        return users;
     }
 
-    @PostMapping("/user")
+    @PostMapping()
     public ResponseEntity<Void> createUser(@Valid @RequestBody User user, UriComponentsBuilder builder){
 
         try {
@@ -52,7 +53,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("users/{id}")
+    @GetMapping("/{id}")
     public Optional<User> getUser(@Min (1) @PathVariable("id") Long id){
         try {
             return  userService.findById(id);
@@ -62,7 +63,7 @@ public class UserController {
     }
 
     //@RequestMapping(value = "users/{id}", method = RequestMethod.PUT)
-    @PutMapping("users/{id}")
+    @PutMapping("/{id}")
     public User updateUser(@PathVariable("id") Long id, @RequestBody User user){
 
         try {
@@ -73,13 +74,13 @@ public class UserController {
 
     }
 
-    @DeleteMapping("users/{id}")
+    @DeleteMapping("/{id}")
     public String deleteUserById(@PathVariable("id") Long id){
         userService.deleteUserById(id);
         return  id + " deleted ";
     }
 
-    @GetMapping("users/userByName/{name}")
+    @GetMapping("/userByName/{name}")
     public User getUser(@PathVariable("name") String name){
         User user = null;
         try {
@@ -89,4 +90,13 @@ public class UserController {
         }
         return user;
     }
+
+//    @GetMapping("/{id}/orders")
+//    public List<Order> getAllOrders(@PathVariable("id") Long id){
+//        try {
+//           return userService.getAllOrders(id);
+//        } catch (UserNotFoundException e) {
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+//        }
+//    }
 }
