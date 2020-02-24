@@ -1,6 +1,7 @@
 package com.stacksimplify.restservices.controllers;
 
 import com.stacksimplify.restservices.exceptions.UserExistException;
+import com.stacksimplify.restservices.exceptions.UserNameNotFoundException;
 import com.stacksimplify.restservices.exceptions.UserNotFoundException;
 import com.stacksimplify.restservices.model.User;
 import com.stacksimplify.restservices.service.UserService;
@@ -9,15 +10,19 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/")
+@Validated
 public class UserController {
 
     @Autowired
@@ -35,7 +40,7 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public ResponseEntity<Void> createUser(@RequestBody User user, UriComponentsBuilder builder){
+    public ResponseEntity<Void> createUser(@Valid @RequestBody User user, UriComponentsBuilder builder){
 
         try {
             userService.createUser(user);
@@ -48,7 +53,7 @@ public class UserController {
     }
 
     @GetMapping("users/{id}")
-    public Optional<User> getUser(@PathVariable("id") Long id){
+    public Optional<User> getUser(@Min (1) @PathVariable("id") Long id){
         try {
             return  userService.findById(id);
         } catch (UserNotFoundException e) {
@@ -76,6 +81,12 @@ public class UserController {
 
     @GetMapping("users/userByName/{name}")
     public User getUser(@PathVariable("name") String name){
-        return  userService.findByName(name);
+        User user = null;
+        try {
+            user = userService.findByName(name);
+        } catch (UserNameNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+        return user;
     }
 }
